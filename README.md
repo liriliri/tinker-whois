@@ -1,6 +1,6 @@
 # tinker-whois 
 
-A WHOIS query plugin for TINKER, supporting domain, IP address, and ASN lookups.
+A WHOIS query plugin for [TINKER](https://github.com/liriliri/tinker), supporting domain, IP address, and ASN lookups.
 
 ![Screenshot](https://raw.githubusercontent.com/liriliri/tinker-whois/master/screenshot.png)
 
