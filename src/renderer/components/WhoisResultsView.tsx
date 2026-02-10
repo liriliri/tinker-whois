@@ -138,11 +138,11 @@ const WhoisResultsView = ({
   }
 
   return (
-    <div className="flex-1 min-h-0 px-8 pb-8 flex flex-col">
-      <Separator.Root className="bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent h-[1px] mb-5" />
+    <div className="flex-1 min-h-0 px-6 pb-6 flex flex-col">
+      <Separator.Root className="bg-slate-200 dark:bg-slate-800 h-[1px] mb-4" />
 
-      <div className="flex items-center justify-between mb-4 flex-shrink-0">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+      <div className="flex items-center justify-between mb-3 flex-shrink-0">
+        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
           {t('queryResults')}
         </h2>
         <div className="flex items-center gap-2">
@@ -150,12 +150,11 @@ const WhoisResultsView = ({
             <button
               onClick={onToggleView}
               className={className(
-                'flex items-center gap-2 px-3 py-1.5 rounded border transition-all duration-200',
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border transition-colors duration-150',
                 'text-xs font-medium',
                 showRaw
-                  ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300'
-                  : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400',
-                'hover:shadow-md hover:scale-105 active:scale-95',
+                  ? 'bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
               )}
             >
               {showRaw ? (
@@ -172,8 +171,8 @@ const WhoisResultsView = ({
             </button>
           )}
           {server && (
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
-              <Server className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-sm border border-slate-200 dark:border-slate-700">
+              <Server className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
               <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                 {server}
               </span>

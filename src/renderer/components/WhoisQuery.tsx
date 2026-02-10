@@ -14,13 +14,16 @@ const WhoisQuery = observer(() => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="h-screen bg-slate-50 dark:bg-slate-950">
       <div className="mx-auto max-w-5xl h-full flex flex-col">
         {!result && <WhoisSearchBar onQueryComplete={handleQueryComplete} />}
 
         {result && (
           <>
-            <WhoisSearchBar onQueryComplete={handleQueryComplete} />
+            <WhoisSearchBar
+              onQueryComplete={handleQueryComplete}
+              hideExamples
+            />
 
             {result.success ? (
               <WhoisResultsView

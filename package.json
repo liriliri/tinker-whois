@@ -1,6 +1,6 @@
 {
   "name": "tinker-whois",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "WHOIS Query Plugin for Tinker",
   "files": [
     "dist/",
