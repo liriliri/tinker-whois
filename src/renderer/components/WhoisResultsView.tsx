@@ -12,7 +12,7 @@ import {
   Building2,
   Shield,
 } from 'lucide-react'
-import type { ParsedWhoisData } from '../../../preload/whoisParser'
+import type { ParsedWhoisData } from '../../preload/whoisParser'
 
 interface WhoisResultsViewProps {
   parsed?: ParsedWhoisData
