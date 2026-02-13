@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import store from '../store'
+import { tw } from '../theme'
 import WhoisSearchBar from './WhoisSearchBar'
 import WhoisResultsView from './WhoisResultsView'
 import WhoisErrorView from './WhoisErrorView'
@@ -14,7 +15,7 @@ const WhoisQuery = observer(() => {
   }
 
   return (
-    <div className="h-screen bg-slate-50 dark:bg-slate-950">
+    <div className={`h-screen ${tw.background.primary}`}>
       <div className="mx-auto max-w-5xl h-full flex flex-col">
         {!result && <WhoisSearchBar onQueryComplete={handleQueryComplete} />}
 

@@ -4,6 +4,7 @@ import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
 import { Search, Loader2 } from 'lucide-react'
 import store from '../store'
+import { tw } from '../theme'
 
 interface WhoisSearchBarProps {
   onQueryComplete?: () => void
@@ -46,14 +47,18 @@ const WhoisSearchBar = observer(
             onKeyDown={handleKeyPress}
             placeholder={t('placeholder')}
             className={className(
-              'flex-1 px-3 py-2 bg-white dark:bg-slate-900',
-              'border border-slate-300 dark:border-slate-700',
-              'text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500',
-              'rounded font-mono text-sm',
-              'focus:outline-none focus:ring-1 focus:ring-slate-400 dark:focus:ring-slate-500 focus:border-slate-400 dark:focus:border-slate-500',
+              'flex-1 px-3 py-2',
+              tw.input.base,
+              tw.input.border,
+              tw.input.text,
+              tw.text.placeholder,
+              'border rounded font-mono text-sm',
+              'focus:outline-none',
+              tw.input.focusRing,
+              tw.border.focus,
               'transition-colors duration-150',
               'disabled:opacity-50 disabled:cursor-not-allowed',
-              'hover:border-slate-400 dark:hover:border-slate-600',
+              tw.input.borderHover,
             )}
             disabled={loading}
           />
@@ -62,10 +67,10 @@ const WhoisSearchBar = observer(
             disabled={loading || !query.trim()}
             className={className(
               'w-40 px-4 py-2 rounded font-medium text-sm',
-              'bg-slate-700 dark:bg-slate-600',
-              'text-white',
-              'hover:bg-slate-800 dark:hover:bg-slate-700',
-              'disabled:bg-slate-300 dark:disabled:bg-slate-700',
+              tw.button.primary.base,
+              tw.text.white,
+              tw.button.primary.hover,
+              tw.button.primary.disabled,
               'disabled:cursor-not-allowed',
               'transition-colors duration-150',
               'flex items-center justify-center gap-2',
@@ -87,7 +92,7 @@ const WhoisSearchBar = observer(
 
         {!hideExamples && (
           <>
-            <Separator.Root className="bg-slate-200 dark:bg-slate-800 h-[1px] mb-3 mx-6" />
+            <Separator.Root className={`${tw.separator} h-[1px] mb-3 mx-6`} />
 
             <div className="flex items-center gap-2 flex-wrap mb-4 px-6">
               <div className="flex gap-2 flex-wrap">
@@ -97,11 +102,12 @@ const WhoisSearchBar = observer(
                     onClick={() => handleExampleClick(example)}
                     className={className(
                       'text-xs px-2.5 py-1 font-mono rounded-sm',
-                      'bg-slate-100 dark:bg-slate-800',
-                      'text-slate-600 dark:text-slate-400',
-                      'border border-slate-200 dark:border-slate-700',
-                      'hover:bg-slate-200 dark:hover:bg-slate-700',
-                      'hover:border-slate-300 dark:hover:border-slate-600',
+                      tw.button.secondary.base,
+                      tw.text.tertiary,
+                      'border',
+                      tw.button.secondary.border,
+                      tw.button.secondary.hover,
+                      tw.button.secondary.borderHover,
                       'transition-colors duration-150',
                     )}
                   >

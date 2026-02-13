@@ -13,6 +13,7 @@ import {
   Shield,
 } from 'lucide-react'
 import type { ParsedWhoisData } from '../../preload/whoisParser'
+import { tw } from '../theme'
 
 interface WhoisResultsViewProps {
   parsed?: ParsedWhoisData
@@ -73,7 +74,9 @@ const WhoisResultsView = ({
     if (Array.isArray(value)) {
       return (
         <div className="group" key={label}>
-          <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+          <dt
+            className={`text-xs font-medium uppercase tracking-wider mb-2 flex items-center gap-2 ${tw.text.quaternary}`}
+          >
             {icon}
             {label}
           </dt>
@@ -82,7 +85,12 @@ const WhoisResultsView = ({
               {value.map((item, idx) => (
                 <span
                   key={idx}
-                  className="text-slate-700 dark:text-slate-300 font-mono text-xs px-2 py-1 bg-slate-50 dark:bg-slate-800/50 rounded border border-slate-200 dark:border-slate-700"
+                  className={className(
+                    'font-mono text-xs px-2 py-1 rounded border',
+                    tw.text.secondary,
+                    tw.background.code,
+                    tw.border.secondary,
+                  )}
                 >
                   {item}
                 </span>
@@ -95,11 +103,13 @@ const WhoisResultsView = ({
 
     return (
       <div className="group" key={label}>
-        <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-2">
+        <dt
+          className={`text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2 ${tw.text.quaternary}`}
+        >
           {icon}
           {label}
         </dt>
-        <dd className="text-sm text-slate-700 dark:text-slate-300 font-mono mb-4">
+        <dd className={`text-sm font-mono mb-4 ${tw.text.secondary}`}>
           {String(value)}
         </dd>
       </div>
@@ -131,7 +141,9 @@ const WhoisResultsView = ({
 
   const renderRawData = (data?: string) => {
     return (
-      <pre className="text-xs text-slate-700 dark:text-slate-300 font-mono leading-relaxed whitespace-pre-wrap">
+      <pre
+        className={`text-xs font-mono leading-relaxed whitespace-pre-wrap ${tw.text.secondary}`}
+      >
         {data || ''}
       </pre>
     )
@@ -139,10 +151,10 @@ const WhoisResultsView = ({
 
   return (
     <div className="flex-1 min-h-0 px-6 pb-6 flex flex-col">
-      <Separator.Root className="bg-slate-200 dark:bg-slate-800 h-[1px] mb-4" />
+      <Separator.Root className={`${tw.separator} h-[1px] mb-4`} />
 
       <div className="flex items-center justify-between mb-3 flex-shrink-0">
-        <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+        <h2 className={`text-base font-semibold ${tw.text.primary}`}>
           {t('queryResults')}
         </h2>
         <div className="flex items-center gap-2">
@@ -153,8 +165,8 @@ const WhoisResultsView = ({
                 'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border transition-colors duration-150',
                 'text-xs font-medium',
                 showRaw
-                  ? 'bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200'
-                  : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700',
+                  ? `${tw.button.active.base} ${tw.button.active.border} ${tw.button.active.text}`
+                  : `${tw.button.secondary.base} ${tw.button.secondary.border} ${tw.text.tertiary} ${tw.button.secondary.hover}`,
               )}
             >
               {showRaw ? (
@@ -171,9 +183,15 @@ const WhoisResultsView = ({
             </button>
           )}
           {server && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 rounded-sm border border-slate-200 dark:border-slate-700">
-              <Server className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
-              <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
+            <div
+              className={className(
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border',
+                tw.serverBadge.background,
+                tw.serverBadge.border,
+              )}
+            >
+              <Server className={`w-3.5 h-3.5 ${tw.serverBadge.text}`} />
+              <span className={`text-xs font-mono ${tw.serverBadge.text}`}>
                 {server}
               </span>
             </div>
@@ -191,7 +209,9 @@ const WhoisResultsView = ({
           className="flex select-none touch-none p-0.5 transition-colors duration-150 ease-out data-[orientation=vertical]:w-2 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2"
           orientation="vertical"
         >
-          <ScrollArea.Thumb className="flex-1 bg-slate-300 dark:bg-slate-700 rounded-full hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors" />
+          <ScrollArea.Thumb
+            className={`flex-1 rounded-full transition-colors ${tw.scrollbar.thumb} ${tw.scrollbar.thumbHover}`}
+          />
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>
     </div>
