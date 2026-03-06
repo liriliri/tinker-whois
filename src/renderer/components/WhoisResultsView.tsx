@@ -12,7 +12,7 @@ import {
   Building2,
   Shield,
 } from 'lucide-react'
-import type { ParsedWhoisData } from '../../preload/whoisParser'
+import type { ParsedWhoisData } from '../../common/types'
 import { tw } from '../theme'
 
 interface WhoisResultsViewProps {
@@ -66,7 +66,7 @@ const WhoisResultsView = ({
     return null
   }
 
-  const renderDataField = (label: string, value: any) => {
+  const renderDataField = (label: string, value: string | string[]) => {
     if (!value) return null
 
     const icon = getFieldIcon(label)
@@ -110,14 +110,14 @@ const WhoisResultsView = ({
           {label}
         </dt>
         <dd className={`text-sm font-mono mb-4 ${tw.text.secondary}`}>
-          {String(value)}
+          {value}
         </dd>
       </div>
     )
   }
 
   const renderParsedData = (data: ParsedWhoisData) => {
-    const fields: Record<string, any> = {}
+    const fields: Record<string, string | string[]> = {}
 
     if (data.domainName) fields[t('domainName')] = data.domainName
     if (data.registrar) fields[t('registrar')] = data.registrar

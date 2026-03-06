@@ -1,18 +1,14 @@
 import isIp from 'licia/isIp'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
-import { parseWhoisData, ParsedWhoisData } from './whoisParser'
+import { parseWhoisData } from './whoisParser'
+import type { ParsedWhoisData, WhoisResult } from '../common/types'
 
 const WHOIS_TIMEOUT = 10000
 
-export interface WhoisResult {
-  success: boolean
-  data?: string
-  parsed?: ParsedWhoisData
-  error?: string
-  server?: string
+function toErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
 }
 
-// Type definitions for whoiser responses
 interface WhoisDataBase {
   __raw?: string
   __comments?: string[]
@@ -27,7 +23,6 @@ function extractRawData(result: WhoisDataBase): string {
   if ('__raw' in result && result.__raw) {
     return result.__raw as string
   }
-  // If no __raw, return a formatted version of the data
   return Object.entries(result)
     .filter(([key]) => !key.startsWith('__'))
     .map(([key, value]) => {
@@ -62,7 +57,6 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
       }
     }
 
-    // Get the first (primary) result
     const primaryServer = servers[0]
     const result = results[primaryServer]
 
@@ -85,7 +79,7 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: toErrorMessage(error),
     }
   }
 }
@@ -107,7 +101,7 @@ async function queryIPResource(ip: string): Promise<WhoisResult> {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: toErrorMessage(error),
     }
   }
 }
@@ -139,7 +133,7 @@ async function queryASNResource(asn: string): Promise<WhoisResult> {
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: toErrorMessage(error),
     }
   }
 }

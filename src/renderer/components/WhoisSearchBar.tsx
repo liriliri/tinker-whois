@@ -11,6 +11,8 @@ interface WhoisSearchBarProps {
   hideExamples?: boolean
 }
 
+const EXAMPLES = ['google.com', 'github.com', '8.8.8.8', 'AS15169']
+
 const WhoisSearchBar = observer(
   ({ onQueryComplete, hideExamples = false }: WhoisSearchBarProps = {}) => {
     const { t } = useTranslation()
@@ -34,8 +36,6 @@ const WhoisSearchBar = observer(
     const handleExampleClick = (example: string) => {
       store.setQuery(example)
     }
-
-    const examples = ['google.com', 'github.com', '8.8.8.8', 'AS15169']
 
     return (
       <>
@@ -96,7 +96,7 @@ const WhoisSearchBar = observer(
 
             <div className="flex items-center gap-2 flex-wrap mb-4 px-6">
               <div className="flex gap-2 flex-wrap">
-                {examples.map((example) => (
+                {EXAMPLES.map((example) => (
                   <button
                     key={example}
                     onClick={() => handleExampleClick(example)}

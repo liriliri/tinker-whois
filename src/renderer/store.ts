@@ -1,46 +1,9 @@
 import { makeAutoObservable } from 'mobx'
-
-interface ParsedWhoisData {
-  domainName?: string
-  registrar?: string
-  registrarUrl?: string
-  creationDate?: string
-  expiryDate?: string
-  updatedDate?: string
-  status?: string[]
-  nameServers?: string[]
-  dnssec?: string
-  registrant?: {
-    name?: string
-    organization?: string
-    email?: string
-    country?: string
-  }
-  admin?: {
-    name?: string
-    organization?: string
-    email?: string
-  }
-  tech?: {
-    name?: string
-    organization?: string
-    email?: string
-  }
-}
-
-interface WhoisResult {
-  success: boolean
-  data?: string
-  parsed?: ParsedWhoisData
-  error?: string
-  server?: string
-}
+import type { WhoisResult } from '../common/types'
 
 class Store {
-  // Theme management
   isDark: boolean = false
 
-  // Whois query state
   query: string = ''
   result: WhoisResult | null = null
   loading: boolean = false
@@ -50,7 +13,6 @@ class Store {
     this.initTheme()
   }
 
-  // Theme methods
   setIsDark(isDark: boolean) {
     this.isDark = isDark
   }
@@ -60,7 +22,6 @@ class Store {
       const theme = await tinker.getTheme()
       this.isDark = theme === 'dark'
 
-      // Listen for theme changes
       tinker.on('changeTheme', async () => {
         const newTheme = await tinker.getTheme()
         this.setIsDark(newTheme === 'dark')
@@ -70,7 +31,6 @@ class Store {
     }
   }
 
-  // Whois query methods
   setQuery(query: string) {
     this.query = query
   }

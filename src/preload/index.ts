@@ -1,5 +1,6 @@
 import { contextBridge } from 'electron'
-import { whoisQuery, WhoisResult } from './whoisQuery'
+import { whoisQuery } from './whoisQuery'
+import type { WhoisResult } from '../common/types'
 
 const whoisObj = {
   query: (resource: string): Promise<WhoisResult> => {
