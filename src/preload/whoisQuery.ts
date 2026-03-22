@@ -1,7 +1,7 @@
 import isIp from 'licia/isIp'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
 import { parseWhoisData } from './whoisParser'
-import type { ParsedWhoisData, WhoisResult } from '../common/types'
+import type { WhoisResult } from '../common/types'
 
 const WHOIS_TIMEOUT = 10000
 
