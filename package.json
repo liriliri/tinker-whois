@@ -21,12 +21,14 @@
   ],
   "tinker": {
     "name": "WHOIS",
+    "description": "Query WHOIS information for domains and IPs",
     "main": "dist/renderer/index.html",
     "preload": "dist/preload/index.mjs",
     "icon": "icon.png",
     "locales": {
       "zh-CN": {
-        "name": "WHOIS 查询"
+        "name": "WHOIS 查询",
+        "description": "查询域名和 IP 的 WHOIS 信息"
       }
     }
   },
