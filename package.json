@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:preload\"",
-    "dev:renderer": "vite",
+    "dev:renderer": "vite build --watch",
     "dev:preload": "vite build --watch --config vite.preload.ts",
     "build": "concurrently \"npm run build:renderer\" \"npm run build:preload\"",
     "build:renderer": "vite build",
@@ -58,7 +58,7 @@
     "react-i18next": "^16.5.4",
     "sass": "^1.89.2",
     "tailwindcss": "^4.1.17",
-    "tinker-api-types": "^0.1.0",
+    "tinker-api-types": "^0.2.0",
     "typescript": "^5.8.3",
     "vite": "^5.4.19"
   }
