@@ -17,7 +17,7 @@ class Store {
     this.isDark = isDark
   }
 
-  protected async initTheme() {
+  async initTheme() {
     try {
       const theme = await tinker.getTheme()
       this.isDark = theme === 'dark'

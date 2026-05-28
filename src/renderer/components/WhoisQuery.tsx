@@ -11,7 +11,7 @@ const WhoisQuery = observer(() => {
   const [showRaw, setShowRaw] = useState(false)
 
   const handleQueryComplete = () => {
-    setShowRaw(false) // Reset to parsed view when making a new query
+    setShowRaw(false)
   }
 
   return (
