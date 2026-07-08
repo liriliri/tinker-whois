@@ -1,34 +1,16 @@
 import { makeAutoObservable } from 'mobx'
+import isStrBlank from 'licia/isStrBlank'
+import trim from 'licia/trim'
+import { toErrorMessage } from '../common/errorMessage'
 import type { WhoisResult } from '../common/types'
 
 class Store {
-  isDark: boolean = false
-
   query: string = ''
   result: WhoisResult | null = null
   loading: boolean = false
 
   constructor() {
     makeAutoObservable(this)
-    this.initTheme()
-  }
-
-  setIsDark(isDark: boolean) {
-    this.isDark = isDark
-  }
-
-  async initTheme() {
-    try {
-      const theme = await tinker.getTheme()
-      this.isDark = theme === 'dark'
-
-      tinker.on('changeTheme', async () => {
-        const newTheme = await tinker.getTheme()
-        this.setIsDark(newTheme === 'dark')
-      })
-    } catch (err) {
-      console.error('Failed to initialize theme:', err)
-    }
   }
 
   setQuery(query: string) {
@@ -44,7 +26,7 @@ class Store {
   }
 
   async executeQuery() {
-    if (!this.query.trim()) {
+    if (isStrBlank(this.query)) {
       return
     }
 
@@ -52,12 +34,12 @@ class Store {
     this.setResult(null)
 
     try {
-      const res = await whois.query(this.query.trim())
+      const res = await whois.query(trim(this.query))
       this.setResult(res)
     } catch (error) {
       this.setResult({
         success: false,
-        error: error instanceof Error ? error.message : String(error),
+        error: toErrorMessage(error),
       })
     } finally {
       this.setLoading(false)

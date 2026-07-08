@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
 import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
+import isStrBlank from 'licia/isStrBlank'
 import { Search, Loader2 } from 'lucide-react'
 import store from '../store'
 import { tw } from '../theme'
@@ -24,17 +25,9 @@ const WhoisSearchBar = observer(
     }
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter' && !loading && query.trim()) {
+      if (e.key === 'Enter' && !loading && !isStrBlank(query)) {
         handleQuery()
       }
-    }
-
-    const handleQueryChange = (value: string) => {
-      store.setQuery(value)
-    }
-
-    const handleExampleClick = (example: string) => {
-      store.setQuery(example)
     }
 
     return (
@@ -43,7 +36,7 @@ const WhoisSearchBar = observer(
           <input
             type="text"
             value={query}
-            onChange={(e) => handleQueryChange(e.target.value)}
+            onChange={(e) => store.setQuery(e.target.value)}
             onKeyDown={handleKeyPress}
             placeholder={t('placeholder')}
             className={className(
@@ -64,7 +57,7 @@ const WhoisSearchBar = observer(
           />
           <button
             onClick={handleQuery}
-            disabled={loading || !query.trim()}
+            disabled={loading || isStrBlank(query)}
             className={className(
               'w-40 px-4 py-2 rounded font-medium text-sm',
               tw.button.primary.base,
@@ -92,29 +85,29 @@ const WhoisSearchBar = observer(
 
         {!hideExamples && (
           <>
-            <Separator.Root className={`${tw.separator} h-[1px] mb-3 mx-6`} />
+            <Separator.Root
+              className={className(tw.separator, 'h-[1px] mb-3 mx-6')}
+            />
 
-            <div className="flex items-center gap-2 flex-wrap mb-4 px-6">
-              <div className="flex gap-2 flex-wrap">
-                {EXAMPLES.map((example) => (
-                  <button
-                    key={example}
-                    onClick={() => handleExampleClick(example)}
-                    className={className(
-                      'text-xs px-2.5 py-1 font-mono rounded-sm',
-                      tw.button.secondary.base,
-                      tw.text.tertiary,
-                      'border',
-                      tw.button.secondary.border,
-                      tw.button.secondary.hover,
-                      tw.button.secondary.borderHover,
-                      'transition-colors duration-150',
-                    )}
-                  >
-                    {example}
-                  </button>
-                ))}
-              </div>
+            <div className="flex gap-2 flex-wrap mb-4 px-6">
+              {EXAMPLES.map((example) => (
+                <button
+                  key={example}
+                  onClick={() => store.setQuery(example)}
+                  className={className(
+                    'text-xs px-2.5 py-1 font-mono rounded-sm',
+                    tw.button.secondary.base,
+                    tw.text.tertiary,
+                    'border',
+                    tw.button.secondary.border,
+                    tw.button.secondary.hover,
+                    tw.button.secondary.borderHover,
+                    'transition-colors duration-150',
+                  )}
+                >
+                  {example}
+                </button>
+              ))}
             </div>
           </>
         )}

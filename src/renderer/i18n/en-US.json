@@ -14,5 +14,10 @@
   "updatedDate": "Updated Date",
   "status": "Status",
   "nameServers": "Name Servers",
-  "dnssec": "DNSSEC"
+  "dnssec": "DNSSEC",
+  "unknownError": "Unknown error",
+  "emptyResource": "Please enter a domain, IP address, or ASN",
+  "noWhoisData": "No WHOIS data found for this domain",
+  "invalidAsn": "Invalid ASN format",
+  "ianaWhois": "IANA WHOIS"
 }

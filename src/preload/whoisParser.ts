@@ -1,3 +1,9 @@
+import contain from 'licia/contain'
+import escapeRegExp from 'licia/escapeRegExp'
+import lowerCase from 'licia/lowerCase'
+import some from 'licia/some'
+import trim from 'licia/trim'
+import unique from 'licia/unique'
 import type { ParsedWhoisData } from '../common/types'
 
 const NOT_FOUND_PATTERNS = [
@@ -15,38 +21,38 @@ const NOT_FOUND_PATTERNS = [
 
 function extractField(text: string, patterns: string[]): string | undefined {
   for (const pattern of patterns) {
-    const regex = new RegExp(`${pattern}:?\\s*(.+)`, 'i')
+    const regex = new RegExp(`${escapeRegExp(pattern)}:?\\s*(.+)`, 'i')
     const match = text.match(regex)
-    if (match && match[1]) {
-      return match[1].trim()
+    if (match?.[1]) {
+      return trim(match[1])
     }
   }
   return undefined
 }
 
 function extractMultipleFields(text: string, patterns: string[]): string[] {
-  const seen = new Set<string>()
   const results: string[] = []
+
   for (const pattern of patterns) {
-    const regex = new RegExp(`${pattern}:?\\s*(.+)`, 'gi')
+    const regex = new RegExp(`${escapeRegExp(pattern)}:?\\s*(.+)`, 'gi')
     let match
     while ((match = regex.exec(text)) !== null) {
       if (match[1]) {
-        const value = match[1].trim()
-        if (value && !seen.has(value)) {
-          seen.add(value)
+        const value = trim(match[1])
+        if (value) {
           results.push(value)
         }
       }
     }
   }
-  return results
+
+  return unique(results)
 }
 
 export function parseWhoisData(rawData: string): ParsedWhoisData | null {
-  const lowerData = rawData.toLowerCase()
-
-  if (NOT_FOUND_PATTERNS.some((pattern) => lowerData.includes(pattern))) {
+  if (
+    some(NOT_FOUND_PATTERNS, (pattern) => contain(lowerCase(rawData), pattern))
+  ) {
     return null
   }
 

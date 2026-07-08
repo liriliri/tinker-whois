@@ -1,13 +1,22 @@
+import filter from 'licia/filter'
+import has from 'licia/has'
+import isArr from 'licia/isArr'
+import isEmpty from 'licia/isEmpty'
 import isIp from 'licia/isIp'
+import isStr from 'licia/isStr'
+import keys from 'licia/keys'
+import lowerCase from 'licia/lowerCase'
+import map from 'licia/map'
+import safeGet from 'licia/safeGet'
+import startWith from 'licia/startWith'
+import toInt from 'licia/toInt'
+import trim from 'licia/trim'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
+import { toErrorMessage } from '../common/errorMessage'
 import { parseWhoisData } from './whoisParser'
 import type { WhoisResult } from '../common/types'
 
 const WHOIS_TIMEOUT = 10000
-
-function toErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
-}
 
 interface WhoisDataBase {
   __raw?: string
@@ -20,25 +29,42 @@ function isASN(str: string): boolean {
 }
 
 function extractRawData(result: WhoisDataBase): string {
-  if ('__raw' in result && result.__raw) {
+  if (has(result, '__raw') && result.__raw) {
     return result.__raw as string
   }
-  return Object.entries(result)
-    .filter(([key]) => !key.startsWith('__'))
-    .map(([key, value]) => {
-      if (Array.isArray(value)) {
-        return value.map((v) => `${key}: ${v}`).join('\n')
+
+  return map(
+    filter(result, (_, key) => !startWith(key, '__')),
+    (value, key) => {
+      if (isArr(value)) {
+        return map(value, (v) => `${key}: ${v}`).join('\n')
       }
       return `${key}: ${value}`
-    })
-    .join('\n')
+    },
+  ).join('\n')
 }
 
 function extractServerInfo(result: WhoisDataBase): string {
-  if ('source' in result && typeof result.source === 'string') {
-    return result.source
+  const source = safeGet(result, 'source')
+  return isStr(source) ? source : 'ianaWhois'
+}
+
+async function queryWhoiserResource(
+  fetcher: () => Promise<WhoisDataBase>,
+): Promise<WhoisResult> {
+  try {
+    const result = await fetcher()
+    return {
+      success: true,
+      data: extractRawData(result),
+      server: extractServerInfo(result),
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: toErrorMessage(error),
+    }
   }
-  return 'IANA WHOIS'
 }
 
 async function queryDomainResource(domain: string): Promise<WhoisResult> {
@@ -49,18 +75,18 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
       raw: true,
     })) as Record<string, WhoisDataBase>
 
-    const servers = Object.keys(results)
-    if (servers.length === 0) {
+    const servers = keys(results)
+    if (isEmpty(servers)) {
       return {
         success: false,
-        error: 'No WHOIS data found for this domain',
+        error: 'noWhoisData',
       }
     }
 
     const primaryServer = servers[0]
     const result = results[primaryServer]
 
-    if ('error' in result) {
+    if (has(result, 'error')) {
       return {
         success: false,
         error: result.error as string,
@@ -84,75 +110,28 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
   }
 }
 
-async function queryIPResource(ip: string): Promise<WhoisResult> {
-  try {
-    const result = (await whoisIp(ip, {
-      timeout: WHOIS_TIMEOUT,
-    })) as WhoisDataBase
-
-    const rawData = extractRawData(result)
-    const server = extractServerInfo(result)
-
-    return {
-      success: true,
-      data: rawData,
-      server,
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: toErrorMessage(error),
-    }
-  }
-}
-
-async function queryASNResource(asn: string): Promise<WhoisResult> {
-  try {
-    const normalizedASN = asn.replace(/^(?:as|asn)/i, '')
-    const asnNumber = parseInt(normalizedASN, 10)
-
-    if (isNaN(asnNumber)) {
-      return {
-        success: false,
-        error: 'Invalid ASN format',
-      }
-    }
-
-    const result = (await whoisAsn(asnNumber, {
-      timeout: WHOIS_TIMEOUT,
-    })) as WhoisDataBase
-
-    const rawData = extractRawData(result)
-    const server = extractServerInfo(result)
-
-    return {
-      success: true,
-      data: rawData,
-      server,
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: toErrorMessage(error),
-    }
-  }
-}
-
 export async function whoisQuery(resource: string): Promise<WhoisResult> {
-  const trimmedResource = resource.trim().toLowerCase()
+  const trimmedResource = lowerCase(trim(resource))
 
   if (!trimmedResource) {
     return {
       success: false,
-      error: 'Please enter a domain, IP address, or ASN',
+      error: 'emptyResource',
     }
   }
 
   if (isIp(trimmedResource)) {
-    return queryIPResource(trimmedResource)
-  } else if (isASN(trimmedResource)) {
-    return queryASNResource(trimmedResource)
-  } else {
-    return queryDomainResource(trimmedResource)
+    return queryWhoiserResource(() =>
+      whoisIp(trimmedResource, { timeout: WHOIS_TIMEOUT }),
+    )
   }
+
+  if (isASN(trimmedResource)) {
+    const asnNumber = toInt(trimmedResource.replace(/^(?:as|asn)/i, ''))
+    return queryWhoiserResource(() =>
+      whoisAsn(asnNumber, { timeout: WHOIS_TIMEOUT }),
+    )
+  }
+
+  return queryDomainResource(trimmedResource)
 }

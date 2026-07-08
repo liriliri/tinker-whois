@@ -1,9 +1,6 @@
 export const tw = {
   background: {
     primary: 'bg-slate-50 dark:bg-slate-950',
-    secondary: 'bg-white dark:bg-slate-900',
-    tertiary: 'bg-slate-100 dark:bg-slate-800',
-    hover: 'bg-slate-200 dark:bg-slate-700',
     code: 'bg-slate-50 dark:bg-slate-800/50',
   },
 
@@ -17,9 +14,7 @@ export const tw = {
   },
 
   border: {
-    primary: 'border-slate-300 dark:border-slate-700',
     secondary: 'border-slate-200 dark:border-slate-700',
-    hover: 'border-slate-400 dark:border-slate-600',
     focus: 'border-slate-400 dark:border-slate-500',
   },
 

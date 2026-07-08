@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
+import contain from 'licia/contain'
+import lowerCase from 'licia/lowerCase'
 import {
   Server,
   FileText,
@@ -34,32 +36,32 @@ const WhoisResultsView = ({
 
   const getFieldIcon = (label: string) => {
     const iconClass = 'w-3.5 h-3.5 flex-shrink-0'
-    const lowerLabel = label.toLowerCase()
+    const lowerLabel = lowerCase(label)
 
-    if (lowerLabel.includes('domain') || lowerLabel.includes('url')) {
+    if (contain(lowerLabel, 'domain') || contain(lowerLabel, 'url')) {
       return <Globe className={iconClass} />
     }
     if (
-      lowerLabel.includes('date') ||
-      lowerLabel.includes('expir') ||
-      lowerLabel.includes('creat') ||
-      lowerLabel.includes('updat')
+      contain(lowerLabel, 'date') ||
+      contain(lowerLabel, 'expir') ||
+      contain(lowerLabel, 'creat') ||
+      contain(lowerLabel, 'updat')
     ) {
       return <Calendar className={iconClass} />
     }
-    if (lowerLabel.includes('mail')) {
+    if (contain(lowerLabel, 'mail')) {
       return <Mail className={iconClass} />
     }
     if (
-      lowerLabel.includes('registrar') ||
-      lowerLabel.includes('organization')
+      contain(lowerLabel, 'registrar') ||
+      contain(lowerLabel, 'organization')
     ) {
       return <Building2 className={iconClass} />
     }
     if (
-      lowerLabel.includes('status') ||
-      lowerLabel.includes('dnssec') ||
-      lowerLabel.includes('server')
+      contain(lowerLabel, 'status') ||
+      contain(lowerLabel, 'dnssec') ||
+      contain(lowerLabel, 'server')
     ) {
       return <Shield className={iconClass} />
     }
@@ -75,7 +77,10 @@ const WhoisResultsView = ({
       return (
         <div className="group" key={label}>
           <dt
-            className={`text-xs font-medium uppercase tracking-wider mb-2 flex items-center gap-2 ${tw.text.quaternary}`}
+            className={className(
+              'text-xs font-medium uppercase tracking-wider mb-2 flex items-center gap-2',
+              tw.text.quaternary,
+            )}
           >
             {icon}
             {label}
@@ -104,12 +109,15 @@ const WhoisResultsView = ({
     return (
       <div className="group" key={label}>
         <dt
-          className={`text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2 ${tw.text.quaternary}`}
+          className={className(
+            'text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2',
+            tw.text.quaternary,
+          )}
         >
           {icon}
           {label}
         </dt>
-        <dd className={`text-sm font-mono mb-4 ${tw.text.secondary}`}>
+        <dd className={className('text-sm font-mono mb-4', tw.text.secondary)}>
           {value}
         </dd>
       </div>
@@ -142,7 +150,10 @@ const WhoisResultsView = ({
   const renderRawData = (data?: string) => {
     return (
       <pre
-        className={`text-xs font-mono leading-relaxed whitespace-pre-wrap ${tw.text.secondary}`}
+        className={className(
+          'text-xs font-mono leading-relaxed whitespace-pre-wrap',
+          tw.text.secondary,
+        )}
       >
         {data || ''}
       </pre>
@@ -151,10 +162,10 @@ const WhoisResultsView = ({
 
   return (
     <div className="flex-1 min-h-0 px-6 pb-6 flex flex-col">
-      <Separator.Root className={`${tw.separator} h-[1px] mb-4`} />
+      <Separator.Root className={className(tw.separator, 'h-[1px] mb-4')} />
 
       <div className="flex items-center justify-between mb-3 flex-shrink-0">
-        <h2 className={`text-base font-semibold ${tw.text.primary}`}>
+        <h2 className={className('text-base font-semibold', tw.text.primary)}>
           {t('queryResults')}
         </h2>
         <div className="flex items-center gap-2">
@@ -165,8 +176,17 @@ const WhoisResultsView = ({
                 'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border transition-colors duration-150',
                 'text-xs font-medium',
                 showRaw
-                  ? `${tw.button.active.base} ${tw.button.active.border} ${tw.button.active.text}`
-                  : `${tw.button.secondary.base} ${tw.button.secondary.border} ${tw.text.tertiary} ${tw.button.secondary.hover}`,
+                  ? [
+                      tw.button.active.base,
+                      tw.button.active.border,
+                      tw.button.active.text,
+                    ]
+                  : [
+                      tw.button.secondary.base,
+                      tw.button.secondary.border,
+                      tw.text.tertiary,
+                      tw.button.secondary.hover,
+                    ],
               )}
             >
               {showRaw ? (
@@ -190,9 +210,13 @@ const WhoisResultsView = ({
                 tw.serverBadge.border,
               )}
             >
-              <Server className={`w-3.5 h-3.5 ${tw.serverBadge.text}`} />
-              <span className={`text-xs font-mono ${tw.serverBadge.text}`}>
-                {server}
+              <Server
+                className={className('w-3.5 h-3.5', tw.serverBadge.text)}
+              />
+              <span
+                className={className('text-xs font-mono', tw.serverBadge.text)}
+              >
+                {t(server, { defaultValue: server })}
               </span>
             </div>
           )}
@@ -210,7 +234,11 @@ const WhoisResultsView = ({
           orientation="vertical"
         >
           <ScrollArea.Thumb
-            className={`flex-1 rounded-full transition-colors ${tw.scrollbar.thumb} ${tw.scrollbar.thumbHover}`}
+            className={className(
+              'flex-1 rounded-full transition-colors',
+              tw.scrollbar.thumb,
+              tw.scrollbar.thumbHover,
+            )}
           />
         </ScrollArea.Scrollbar>
       </ScrollArea.Root>

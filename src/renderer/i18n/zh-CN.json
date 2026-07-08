@@ -14,5 +14,10 @@
   "updatedDate": "更新日期",
   "status": "状态",
   "nameServers": "名称服务器",
-  "dnssec": "DNSSEC"
+  "dnssec": "DNSSEC",
+  "unknownError": "未知错误",
+  "emptyResource": "请输入域名、IP 地址或 ASN",
+  "noWhoisData": "未找到该域名的 WHOIS 数据",
+  "invalidAsn": "ASN 格式无效",
+  "ianaWhois": "IANA WHOIS"
 }
