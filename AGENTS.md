@@ -26,6 +26,10 @@ icon.png
 - Small, focused components.
 - Avoid unnecessary comments.
 
+## UI design
+
+When doing a broad visual refresh (overall style, typography, layout) or rebuilding the plugin around new functionality, read and follow `skills/frontend-design/SKILL.md` to guide interface work. That skill helps with aesthetic direction and deliberate design choices so the UI does not read as generic defaults.
+
 ## TINKER configuration
 
 Declare `tinker` in `package.json`:
