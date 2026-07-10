@@ -1,75 +1,71 @@
 export const tw = {
   background: {
-    primary: 'bg-slate-50 dark:bg-slate-950',
-    code: 'bg-slate-50 dark:bg-slate-800/50',
+    primary: 'bg-[#f5f5f5] dark:bg-[#1e1e1e]',
+    surface: 'bg-white dark:bg-[#252526]',
+    code: 'bg-[#f5f5f5] dark:bg-[#2d2d2d]',
   },
 
   text: {
-    primary: 'text-slate-900 dark:text-slate-100',
-    secondary: 'text-slate-700 dark:text-slate-300',
-    tertiary: 'text-slate-600 dark:text-slate-400',
-    quaternary: 'text-slate-500 dark:text-slate-400',
-    placeholder: 'placeholder:text-slate-400 dark:placeholder:text-slate-500',
+    secondary: 'text-[#333] dark:text-[#ccc]',
+    tertiary: 'text-[#666] dark:text-[#999]',
+    quaternary: 'text-[#888] dark:text-[#777]',
+    placeholder: 'placeholder:text-[#999] dark:placeholder:text-[#666]',
     white: 'text-white',
   },
 
   border: {
-    secondary: 'border-slate-200 dark:border-slate-700',
-    focus: 'border-slate-400 dark:border-slate-500',
+    secondary: 'border-[#ddd] dark:border-[#3c3c3c]',
+    focus: 'border-[#888] dark:border-[#666]',
   },
 
   button: {
     primary: {
-      base: 'bg-slate-700 dark:bg-slate-600',
-      hover: 'hover:bg-slate-800 dark:hover:bg-slate-700',
-      disabled: 'disabled:bg-slate-300 dark:disabled:bg-slate-700',
+      base: 'bg-[#0066cc] dark:bg-[#0078d4]',
+      hover: 'hover:bg-[#005aad] dark:hover:bg-[#1a86d9]',
+      disabled: 'disabled:bg-[#ccc] dark:disabled:bg-[#444]',
     },
     secondary: {
-      base: 'bg-slate-100 dark:bg-slate-800',
-      hover: 'hover:bg-slate-200 dark:hover:bg-slate-700',
-      border: 'border-slate-200 dark:border-slate-700',
-      borderHover: 'hover:border-slate-300 dark:hover:border-slate-600',
+      base: 'bg-white dark:bg-[#2d2d2d]',
+      hover: 'hover:bg-[#f0f0f0] dark:hover:bg-[#383838]',
+      border: 'border-[#ccc] dark:border-[#555]',
     },
     active: {
-      base: 'bg-slate-200 dark:bg-slate-700',
-      border: 'border-slate-300 dark:border-slate-600',
-      text: 'text-slate-800 dark:text-slate-200',
+      base: 'bg-[#e8f0fe] dark:bg-[#333]',
+      border: 'border-[#0066cc] dark:border-[#0078d4]',
+      text: 'text-[#0066cc] dark:text-[#4da3ff]',
     },
   },
 
   input: {
-    base: 'bg-white dark:bg-slate-900',
-    border: 'border-slate-300 dark:border-slate-700',
-    borderHover: 'hover:border-slate-400 dark:hover:border-slate-600',
-    text: 'text-slate-900 dark:text-slate-100',
-    focusRing: 'focus:ring-1 focus:ring-slate-400 dark:focus:ring-slate-500',
+    base: 'bg-white dark:bg-[#252526]',
+    border: 'border-[#ccc] dark:border-[#555]',
+    text: 'text-[#1a1a1a] dark:text-[#e8e8e8]',
+    focusRing:
+      'focus:ring-1 focus:ring-[#0066cc]/40 dark:focus:ring-[#0078d4]/40',
   },
 
-  separator: 'bg-slate-200 dark:bg-slate-800',
+  separator: 'bg-[#ddd] dark:bg-[#3c3c3c]',
 
   scrollbar: {
-    thumb: 'bg-slate-300 dark:bg-slate-700',
-    thumbHover: 'hover:bg-slate-400 dark:hover:bg-slate-600',
+    thumb: 'bg-[#ccc] dark:bg-[#555]',
+    thumbHover: 'hover:bg-[#aaa] dark:hover:bg-[#666]',
   },
 
   error: {
-    background:
-      'from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20',
-    border: 'border-red-200 dark:border-red-800/50',
+    background: 'bg-red-50 dark:bg-red-950/30',
+    border: 'border-red-200 dark:border-red-900/50',
     icon: {
-      background: 'bg-red-100 dark:bg-red-900/30',
-      border: 'border-red-200 dark:border-red-800',
       text: 'text-red-600 dark:text-red-400',
     },
     text: {
-      title: 'text-red-900 dark:text-red-300',
-      content: 'text-red-800 dark:text-red-400',
+      title: 'text-red-800 dark:text-red-300',
+      content: 'text-red-700 dark:text-red-400',
     },
   },
 
   serverBadge: {
-    background: 'bg-slate-100 dark:bg-slate-800',
-    border: 'border-slate-200 dark:border-slate-700',
-    text: 'text-slate-600 dark:text-slate-400',
+    background: 'bg-[#f0f0f0] dark:bg-[#2d2d2d]',
+    border: 'border-[#ddd] dark:border-[#444]',
+    text: 'text-[#666] dark:text-[#999]',
   },
 }

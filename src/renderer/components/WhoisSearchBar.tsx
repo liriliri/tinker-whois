@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import { useTranslation } from 'react-i18next'
-import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
 import isStrBlank from 'licia/isStrBlank'
 import { Search, Loader2 } from 'lucide-react'
@@ -9,13 +8,10 @@ import { tw } from '../theme'
 
 interface WhoisSearchBarProps {
   onQueryComplete?: () => void
-  hideExamples?: boolean
 }
 
-const EXAMPLES = ['google.com', 'github.com', '8.8.8.8', 'AS15169']
-
 const WhoisSearchBar = observer(
-  ({ onQueryComplete, hideExamples = false }: WhoisSearchBarProps = {}) => {
+  ({ onQueryComplete }: WhoisSearchBarProps = {}) => {
     const { t } = useTranslation()
     const { query, loading } = store
 
@@ -31,8 +27,8 @@ const WhoisSearchBar = observer(
     }
 
     return (
-      <>
-        <div className="flex gap-2 mb-4 px-6 pt-6">
+      <div className="flex-shrink-0 px-4 pt-4 pb-2">
+        <div className="flex gap-2.5">
           <input
             type="text"
             value={query}
@@ -40,78 +36,46 @@ const WhoisSearchBar = observer(
             onKeyDown={handleKeyPress}
             placeholder={t('placeholder')}
             className={className(
-              'flex-1 px-3 py-2',
+              'min-w-0 flex-1 px-3 py-2 font-mono text-sm',
               tw.input.base,
               tw.input.border,
               tw.input.text,
               tw.text.placeholder,
-              'border rounded font-mono text-sm',
+              'rounded border',
               'focus:outline-none',
               tw.input.focusRing,
               tw.border.focus,
-              'transition-colors duration-150',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              tw.input.borderHover,
+              'disabled:cursor-not-allowed disabled:opacity-50',
             )}
             disabled={loading}
+            autoFocus
           />
           <button
             onClick={handleQuery}
             disabled={loading || isStrBlank(query)}
             className={className(
-              'w-40 px-4 py-2 rounded font-medium text-sm',
+              'flex shrink-0 items-center gap-2 rounded px-4 py-2 text-sm',
               tw.button.primary.base,
               tw.text.white,
               tw.button.primary.hover,
               tw.button.primary.disabled,
               'disabled:cursor-not-allowed',
-              'transition-colors duration-150',
-              'flex items-center justify-center gap-2',
             )}
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 {t('querying')}
               </>
             ) : (
               <>
-                <Search className="w-4 h-4" />
+                <Search className="h-4 w-4" />
                 {t('query')}
               </>
             )}
           </button>
         </div>
-
-        {!hideExamples && (
-          <>
-            <Separator.Root
-              className={className(tw.separator, 'h-[1px] mb-3 mx-6')}
-            />
-
-            <div className="flex gap-2 flex-wrap mb-4 px-6">
-              {EXAMPLES.map((example) => (
-                <button
-                  key={example}
-                  onClick={() => store.setQuery(example)}
-                  className={className(
-                    'text-xs px-2.5 py-1 font-mono rounded-sm',
-                    tw.button.secondary.base,
-                    tw.text.tertiary,
-                    'border',
-                    tw.button.secondary.border,
-                    tw.button.secondary.hover,
-                    tw.button.secondary.borderHover,
-                    'transition-colors duration-150',
-                  )}
-                >
-                  {example}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-      </>
+      </div>
     )
   },
 )

@@ -2,18 +2,7 @@ import { useTranslation } from 'react-i18next'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
-import contain from 'licia/contain'
-import lowerCase from 'licia/lowerCase'
-import {
-  Server,
-  FileText,
-  FileCode,
-  Globe,
-  Calendar,
-  Mail,
-  Building2,
-  Shield,
-} from 'lucide-react'
+import { Server, FileText, FileCode } from 'lucide-react'
 import type { ParsedWhoisData } from '../../common/types'
 import { tw } from '../theme'
 
@@ -34,91 +23,27 @@ const WhoisResultsView = ({
 }: WhoisResultsViewProps) => {
   const { t } = useTranslation()
 
-  const getFieldIcon = (label: string) => {
-    const iconClass = 'w-3.5 h-3.5 flex-shrink-0'
-    const lowerLabel = lowerCase(label)
-
-    if (contain(lowerLabel, 'domain') || contain(lowerLabel, 'url')) {
-      return <Globe className={iconClass} />
-    }
-    if (
-      contain(lowerLabel, 'date') ||
-      contain(lowerLabel, 'expir') ||
-      contain(lowerLabel, 'creat') ||
-      contain(lowerLabel, 'updat')
-    ) {
-      return <Calendar className={iconClass} />
-    }
-    if (contain(lowerLabel, 'mail')) {
-      return <Mail className={iconClass} />
-    }
-    if (
-      contain(lowerLabel, 'registrar') ||
-      contain(lowerLabel, 'organization')
-    ) {
-      return <Building2 className={iconClass} />
-    }
-    if (
-      contain(lowerLabel, 'status') ||
-      contain(lowerLabel, 'dnssec') ||
-      contain(lowerLabel, 'server')
-    ) {
-      return <Shield className={iconClass} />
-    }
-    return null
-  }
-
   const renderDataField = (label: string, value: string | string[]) => {
     if (!value) return null
 
-    const icon = getFieldIcon(label)
-
-    if (Array.isArray(value)) {
-      return (
-        <div className="group" key={label}>
-          <dt
-            className={className(
-              'text-xs font-medium uppercase tracking-wider mb-2 flex items-center gap-2',
-              tw.text.quaternary,
-            )}
-          >
-            {icon}
-            {label}
-          </dt>
-          <dd className="text-sm mb-4">
-            <div className="flex flex-col gap-1">
-              {value.map((item, idx) => (
-                <span
-                  key={idx}
-                  className={className(
-                    'font-mono text-xs px-2 py-1 rounded border',
-                    tw.text.secondary,
-                    tw.background.code,
-                    tw.border.secondary,
-                  )}
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          </dd>
-        </div>
-      )
-    }
+    const items = Array.isArray(value) ? value : [value]
 
     return (
-      <div className="group" key={label}>
-        <dt
-          className={className(
-            'text-xs font-medium uppercase tracking-wider mb-1 flex items-center gap-2',
-            tw.text.quaternary,
-          )}
-        >
-          {icon}
+      <div key={label}>
+        <dt className={className('mb-1 text-xs', tw.text.quaternary)}>
           {label}
         </dt>
-        <dd className={className('text-sm font-mono mb-4', tw.text.secondary)}>
-          {value}
+        <dd className="mb-4">
+          <div className="flex flex-col gap-1">
+            {items.map((item, idx) => (
+              <span
+                key={idx}
+                className={className('font-mono text-sm', tw.text.secondary)}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </dd>
       </div>
     )
@@ -139,7 +64,7 @@ const WhoisResultsView = ({
     if (data.dnssec) fields[t('dnssec')] = data.dnssec
 
     return (
-      <dl className="space-y-1">
+      <dl>
         {Object.entries(fields).map(([label, value]) =>
           renderDataField(label, value),
         )}
@@ -151,7 +76,7 @@ const WhoisResultsView = ({
     return (
       <pre
         className={className(
-          'text-xs font-mono leading-relaxed whitespace-pre-wrap',
+          'font-mono text-sm leading-relaxed whitespace-pre-wrap',
           tw.text.secondary,
         )}
       >
@@ -161,20 +86,19 @@ const WhoisResultsView = ({
   }
 
   return (
-    <div className="flex-1 min-h-0 px-6 pb-6 flex flex-col">
-      <Separator.Root className={className(tw.separator, 'h-[1px] mb-4')} />
+    <div className="flex min-h-0 flex-1 flex-col px-4 pb-4">
+      <Separator.Root className={className(tw.separator, 'mb-3 h-px')} />
 
-      <div className="flex items-center justify-between mb-3 flex-shrink-0">
-        <h2 className={className('text-base font-semibold', tw.text.primary)}>
+      <div className="mb-3 flex shrink-0 items-center justify-between">
+        <span className={className('text-sm font-medium', tw.text.tertiary)}>
           {t('queryResults')}
-        </h2>
+        </span>
         <div className="flex items-center gap-2">
           {parsed && (
             <button
               onClick={onToggleView}
               className={className(
-                'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border transition-colors duration-150',
-                'text-xs font-medium',
+                'flex items-center gap-1.5 rounded border px-2.5 py-1 text-xs',
                 showRaw
                   ? [
                       tw.button.active.base,
@@ -191,13 +115,13 @@ const WhoisResultsView = ({
             >
               {showRaw ? (
                 <>
-                  <FileText className="w-3.5 h-3.5" />
-                  <span>{t('viewParsed')}</span>
+                  <FileText className="h-3.5 w-3.5" />
+                  {t('viewParsed')}
                 </>
               ) : (
                 <>
-                  <FileCode className="w-3.5 h-3.5" />
-                  <span>{t('viewRaw')}</span>
+                  <FileCode className="h-3.5 w-3.5" />
+                  {t('viewRaw')}
                 </>
               )}
             </button>
@@ -205,16 +129,16 @@ const WhoisResultsView = ({
           {server && (
             <div
               className={className(
-                'flex items-center gap-1.5 px-2.5 py-1 rounded-sm border',
+                'flex items-center gap-1.5 rounded border px-2.5 py-1',
                 tw.serverBadge.background,
                 tw.serverBadge.border,
               )}
             >
               <Server
-                className={className('w-3.5 h-3.5', tw.serverBadge.text)}
+                className={className('h-3.5 w-3.5', tw.serverBadge.text)}
               />
               <span
-                className={className('text-xs font-mono', tw.serverBadge.text)}
+                className={className('font-mono text-xs', tw.serverBadge.text)}
               >
                 {t(server, { defaultValue: server })}
               </span>
@@ -223,19 +147,25 @@ const WhoisResultsView = ({
         </div>
       </div>
 
-      <ScrollArea.Root className="flex-1 min-h-0" type="auto">
-        <ScrollArea.Viewport className="h-full w-full">
+      <ScrollArea.Root className="min-h-0 flex-1" type="auto">
+        <ScrollArea.Viewport
+          className={className(
+            'h-full w-full rounded border p-3',
+            tw.background.surface,
+            tw.border.secondary,
+          )}
+        >
           {showRaw || !parsed
             ? renderRawData(rawData)
             : renderParsedData(parsed)}
         </ScrollArea.Viewport>
         <ScrollArea.Scrollbar
-          className="flex select-none touch-none p-0.5 transition-colors duration-150 ease-out data-[orientation=vertical]:w-2 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-2"
+          className="flex w-2 touch-none p-0.5 select-none"
           orientation="vertical"
         >
           <ScrollArea.Thumb
             className={className(
-              'flex-1 rounded-full transition-colors',
+              'flex-1 rounded-full',
               tw.scrollbar.thumb,
               tw.scrollbar.thumbHover,
             )}

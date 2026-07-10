@@ -7,6 +7,7 @@ import { initReactI18next } from 'react-i18next'
 import WhoisSearchBar from './components/WhoisSearchBar'
 import WhoisResultsView from './components/WhoisResultsView'
 import WhoisErrorView from './components/WhoisErrorView'
+import WhoisEmptyView from './components/WhoisEmptyView'
 import store from './store'
 import { tw } from './theme'
 import enUS from './i18n/en-US.json'
@@ -26,7 +27,7 @@ i18n.use(initReactI18next).init({
 })
 
 const Whois = observer(() => {
-  const { result } = store
+  const { result, loading } = store
   const [showRaw, setShowRaw] = useState(false)
 
   const handleQueryComplete = () => {
@@ -34,35 +35,47 @@ const Whois = observer(() => {
   }
 
   return (
-    <div className={className('h-screen', tw.background.primary)}>
-      <div className="mx-auto max-w-5xl h-full flex flex-col">
-        <WhoisSearchBar
-          onQueryComplete={handleQueryComplete}
-          hideExamples={!!result}
-        />
+    <div className={className('flex h-screen flex-col', tw.background.primary)}>
+      <WhoisSearchBar onQueryComplete={handleQueryComplete} />
 
-        {result &&
-          (result.success ? (
-            <WhoisResultsView
-              parsed={result.parsed}
-              rawData={result.data}
-              server={result.server}
-              showRaw={showRaw}
-              onToggleView={() => setShowRaw(!showRaw)}
-            />
-          ) : (
-            <div className="px-8 pb-8">
-              <WhoisErrorView error={result.error || 'unknownError'} />
-            </div>
-          ))}
-      </div>
+      {result ? (
+        result.success ? (
+          <WhoisResultsView
+            parsed={result.parsed}
+            rawData={result.data}
+            server={result.server}
+            showRaw={showRaw}
+            onToggleView={() => setShowRaw(!showRaw)}
+          />
+        ) : (
+          <div className="flex min-h-0 flex-1 flex-col px-4 pb-4">
+            <WhoisErrorView error={result.error || 'unknownError'} />
+          </div>
+        )
+      ) : (
+        <WhoisEmptyView
+          loading={loading}
+          onQueryComplete={handleQueryComplete}
+        />
+      )}
     </div>
   )
 })
 
 ;(async function () {
-  const language = await tinker.getLanguage()
+  const applyTheme = (theme: string) => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }
+
+  const [language, theme] = await Promise.all([
+    tinker.getLanguage(),
+    tinker.getTheme(),
+  ])
+
   i18n.changeLanguage(language)
+  applyTheme(theme)
+  tinker.on('changeTheme', applyTheme)
+
   const container = document.getElementById('app') as HTMLElement
   createRoot(container).render(<Whois />)
 })()

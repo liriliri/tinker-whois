@@ -3,6 +3,11 @@
   "querying": "Querying...",
   "query": "Query",
   "queryResults": "Query Results",
+  "emptyTitle": "No results yet",
+  "emptyHint": "Click an example below to start a query.",
+  "queryTypeDomain": "Domain",
+  "queryTypeIp": "IP address",
+  "queryTypeAsn": "ASN",
   "queryFailed": "Query Failed",
   "viewParsed": "View Parsed",
   "viewRaw": "View Raw",
@@ -18,6 +23,5 @@
   "unknownError": "Unknown error",
   "emptyResource": "Please enter a domain, IP address, or ASN",
   "noWhoisData": "No WHOIS data found for this domain",
-  "invalidAsn": "Invalid ASN format",
   "ianaWhois": "IANA WHOIS"
 }

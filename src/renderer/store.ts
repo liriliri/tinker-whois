@@ -25,6 +25,11 @@ class Store {
     this.loading = loading
   }
 
+  async queryWith(query: string) {
+    this.setQuery(query)
+    await this.executeQuery()
+  }
+
   async executeQuery() {
     if (isStrBlank(this.query)) {
       return
