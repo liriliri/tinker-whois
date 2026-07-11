@@ -3,14 +3,19 @@ import isStrBlank from 'licia/isStrBlank'
 import trim from 'licia/trim'
 import { toErrorMessage } from '../common/errorMessage'
 import type { WhoisResult } from '../common/types'
+import { createMcpApi } from './mcp'
 
-class Store {
+export class Store {
+  readonly mcp = createMcpApi(() => this)
+
   query: string = ''
   result: WhoisResult | null = null
   loading: boolean = false
 
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this, {
+      mcp: false,
+    })
   }
 
   setQuery(query: string) {

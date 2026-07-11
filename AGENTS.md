@@ -11,6 +11,7 @@ src/
   renderer/
     main.tsx       # React entry
     store.ts       # MobX state
+    mcp.ts         # MCP tool handlers (optional)
     components/    # UI components
     i18n/          # Locale strings
 index.html
@@ -55,6 +56,15 @@ Field roles by stage:
 - **Publish** — `package.json` `"name"` should use the `tinker-xxx` prefix; `"files"` should include `dist/` and `icon.png` so only build artifacts are packaged.
 - **Listing** — `name`, `description`, and `icon` are shown when browsing or searching plugins in Tinker; `locales` overrides `name` and `description` for the matching user language.
 - **Runtime** — `main` is the renderer entry loaded when the plugin window opens; `preload` runs first to expose Node-only APIs to the renderer (omit if not needed).
+- **MCP** — optional `mcp.tools` declares schemas for `tinker call` / `tinker mcp` (tagged `[mcp]` in `tinker list`).
+
+## MCP
+
+Optional. Schema in `package.json` `tinker.mcp.tools`; handlers in `src/renderer/mcp.ts` via `tinker.registerMcp({ callTool })`; wire from store with `readonly mcp = createMcpApi(() => this)`.
+
+- Constraints live in `inputSchema` (Tinker validates before call) — type args directly, no basic checks in handlers.
+- Return plain objects or `Error: ...` strings; do not `JSON.stringify` (host serializes).
+- Reuse existing store APIs; omit `mcp` when there is nothing useful to automate.
 
 ## Tinker API
 
