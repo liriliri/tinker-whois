@@ -63,8 +63,10 @@ Field roles by stage:
 Optional. Schema in `package.json` `tinker.mcp.tools`; handlers in `src/renderer/mcp.ts` via `tinker.registerMcp({ callTool })`; wire from store with `readonly mcp = createMcpApi(() => this)`.
 
 - Constraints live in `inputSchema` (Tinker validates before call) — type args directly, no basic checks in handlers.
-- Return plain objects or `Error: ...` strings; do not `JSON.stringify` (host serializes).
-- Reuse existing store APIs; omit `mcp` when there is nothing useful to automate.
+- Return store state as plain objects; do not `JSON.stringify` or hand-pick fields (host serializes).
+- Prefer `throw new Error(...)` on failure (host catches); `Error: ...` return strings also work.
+- Drive existing store/UI methods from `mcp.ts`; avoid store refactors just for MCP.
+- Omit `mcp` when there is nothing useful to automate.
 
 ## Tinker API
 
