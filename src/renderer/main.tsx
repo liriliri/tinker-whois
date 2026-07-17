@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import className from 'licia/className'
+import waitUntil from 'licia/waitUntil'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import WhoisSearchBar from './components/WhoisSearchBar'
@@ -75,6 +76,9 @@ const Whois = observer(() => {
   i18n.changeLanguage(language)
   applyTheme(theme)
   tinker.on('changeTheme', applyTheme)
+
+  // ESM preload is async — wait before rendering.
+  await waitUntil(() => typeof whois !== 'undefined')
 
   const container = document.getElementById('app') as HTMLElement
   createRoot(container).render(<Whois />)
