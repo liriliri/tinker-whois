@@ -8,7 +8,6 @@ A WHOIS query plugin for [TINKER](https://github.com/liriliri/tinker), supportin
 
 - **Domain, IP, ASN** queries
 - **Fast response** (direct WHOIS TCP)
-- **Modern UI**
 
 ## Installation
 
