@@ -29,7 +29,7 @@ icon.png
 
 ## UI design
 
-When doing a broad visual refresh (overall style, typography, layout) or rebuilding the plugin around new functionality, read and follow `skills/frontend-design/SKILL.md` to guide interface work. That skill helps with aesthetic direction and deliberate design choices so the UI does not read as generic defaults.
+When doing a broad visual refresh (overall style, typography, layout) or rebuilding the plugin around new functionality, read and follow `.agents/skills/frontend-design/SKILL.md` to guide interface work. That skill helps with aesthetic direction and deliberate design choices so the UI does not read as generic defaults.
 
 ## TINKER configuration
 
