@@ -12,7 +12,7 @@ import startWith from 'licia/startWith'
 import toInt from 'licia/toInt'
 import trim from 'licia/trim'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
-import { toErrorMessage } from '../common/errorMessage'
+import { toErrorMessage } from '../common/util'
 import { parseWhoisData } from './whoisParser'
 import type { WhoisResult } from '../common/types'
 
