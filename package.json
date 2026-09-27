@@ -1,7 +1,7 @@
 {
   "name": "tinker-whois",
-  "version": "0.5.1",
-  "description": "WHOIS Query Plugin for TINKER",
+  "version": "0.5.2",
+  "description": "Query WHOIS information for domains, IPs, and ASNs",
   "files": [
     "dist/",
     "icon.png"
@@ -21,7 +21,6 @@
   ],
   "tinker": {
     "name": "WHOIS",
-    "description": "Query WHOIS information for domains and IPs",
     "main": "dist/renderer/index.html",
     "preload": "dist/preload/index.mjs",
     "icon": "icon.png",
@@ -29,7 +28,7 @@
     "locales": {
       "zh-CN": {
         "name": "WHOIS 查询",
-        "description": "查询域名和 IP 的 WHOIS 信息"
+        "description": "查询域名、IP 和 ASN 的 WHOIS 信息"
       }
     },
     "mcp": {
