@@ -35,6 +35,10 @@ const Whois = observer(() => {
     setShowRaw(false)
   }
 
+  const handleToggleView = () => {
+    setShowRaw(!showRaw)
+  }
+
   return (
     <div className={className('flex h-screen flex-col', tw.background.primary)}>
       <WhoisSearchBar onQueryComplete={handleQueryComplete} />
@@ -46,7 +50,7 @@ const Whois = observer(() => {
             rawData={result.data}
             server={result.server}
             showRaw={showRaw}
-            onToggleView={() => setShowRaw(!showRaw)}
+            onToggleView={handleToggleView}
           />
         ) : (
           <div className="flex min-h-0 flex-1 flex-col px-4 pb-4">
@@ -63,7 +67,7 @@ const Whois = observer(() => {
   )
 })
 
-;(async function () {
+void (async () => {
   const language = await tinker.getLanguage()
   i18n.changeLanguage(language)
 

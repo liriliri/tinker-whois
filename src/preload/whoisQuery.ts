@@ -12,7 +12,7 @@ import startWith from 'licia/startWith'
 import toInt from 'licia/toInt'
 import trim from 'licia/trim'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
-import { toErrorMessage } from '../common/util'
+import { errorMessage } from '../common/util'
 import { parseWhoisData } from './whoisParser'
 import type { WhoisResult } from '../common/types'
 
@@ -62,7 +62,7 @@ async function queryWhoiserResource(
   } catch (error) {
     return {
       success: false,
-      error: toErrorMessage(error),
+      error: errorMessage(error),
     }
   }
 }
@@ -105,7 +105,7 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
   } catch (error) {
     return {
       success: false,
-      error: toErrorMessage(error),
+      error: errorMessage(error),
     }
   }
 }

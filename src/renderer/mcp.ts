@@ -1,9 +1,10 @@
+import trim from 'licia/trim'
 import type { Store } from './store'
 
 export function createMcpApi(getStore: () => Store) {
   const callTool = (name: string, args: Record<string, unknown>) => {
     if (name !== 'query') {
-      return `Error: Unknown tool "${name}"`
+      throw new Error(`Unknown tool "${name}"`)
     }
     return query(getStore(), args as { resource: string })
   }
@@ -14,14 +15,10 @@ export function createMcpApi(getStore: () => Store) {
 }
 
 async function query(store: Store, args: { resource: string }) {
-  try {
-    await store.queryWith(args.resource.trim())
-    return {
-      query: store.query,
-      loading: store.loading,
-      result: store.result,
-    }
-  } catch (error) {
-    return `Error: ${error instanceof Error ? error.message : 'WHOIS query failed'}`
+  await store.queryWith(trim(args.resource))
+  return {
+    query: store.query,
+    loading: store.loading,
+    result: store.result,
   }
 }

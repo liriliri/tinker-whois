@@ -2,9 +2,25 @@ import { useTranslation } from 'react-i18next'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import * as Separator from '@radix-ui/react-separator'
 import className from 'licia/className'
+import isArr from 'licia/isArr'
 import { Server, FileText, FileCode } from 'lucide-react'
 import type { ParsedWhoisData } from '../../common/types'
 import { tw } from '../theme'
+
+const TOGGLE_ACTIVE_CLASS = className(
+  'flex items-center gap-1.5 rounded border px-2.5 py-1 text-xs',
+  tw.button.active.base,
+  tw.button.active.border,
+  tw.button.active.text,
+)
+
+const TOGGLE_INACTIVE_CLASS = className(
+  'flex items-center gap-1.5 rounded border px-2.5 py-1 text-xs',
+  tw.button.secondary.base,
+  tw.button.secondary.border,
+  tw.text.tertiary,
+  tw.button.secondary.hover,
+)
 
 interface WhoisResultsViewProps {
   parsed?: ParsedWhoisData
@@ -24,9 +40,9 @@ const WhoisResultsView = ({
   const { t } = useTranslation()
 
   const renderDataField = (label: string, value: string | string[]) => {
-    if (!value) return null
+    if (!value || (isArr(value) && value.length === 0)) return null
 
-    const items = Array.isArray(value) ? value : [value]
+    const items = isArr(value) ? value : [value]
 
     return (
       <div key={label}>
@@ -97,21 +113,7 @@ const WhoisResultsView = ({
           {parsed && (
             <button
               onClick={onToggleView}
-              className={className(
-                'flex items-center gap-1.5 rounded border px-2.5 py-1 text-xs',
-                showRaw
-                  ? [
-                      tw.button.active.base,
-                      tw.button.active.border,
-                      tw.button.active.text,
-                    ]
-                  : [
-                      tw.button.secondary.base,
-                      tw.button.secondary.border,
-                      tw.text.tertiary,
-                      tw.button.secondary.hover,
-                    ],
-              )}
+              className={showRaw ? TOGGLE_ACTIVE_CLASS : TOGGLE_INACTIVE_CLASS}
             >
               {showRaw ? (
                 <>

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import isStrBlank from 'licia/isStrBlank'
 import trim from 'licia/trim'
-import { toErrorMessage } from '../common/util'
+import { errorMessage } from '../common/util'
 import type { WhoisResult } from '../common/types'
 import { createMcpApi } from './mcp'
 
@@ -49,7 +49,7 @@ export class Store {
     } catch (error) {
       this.setResult({
         success: false,
-        error: toErrorMessage(error),
+        error: errorMessage(error),
       })
     } finally {
       this.setLoading(false)
