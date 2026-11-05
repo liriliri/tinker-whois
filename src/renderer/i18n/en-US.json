@@ -1,5 +1,5 @@
 {
-  "placeholder": "Enter domain (e.g., google.com), IP address, or ASN",
+  "placeholder": "Enter domain, URL (e.g. https://www.google.com/), IP, or ASN",
   "querying": "Querying...",
   "query": "Query",
   "queryResults": "Query Results",

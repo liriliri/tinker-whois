@@ -3,3 +3,4 @@ node_modules/
 dist/
 .claude/
 package-lock.json
+*.tsbuildinfo

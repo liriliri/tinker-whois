@@ -1,9 +1,11 @@
+import endWith from 'licia/endWith'
 import filter from 'licia/filter'
 import has from 'licia/has'
 import isArr from 'licia/isArr'
 import isEmpty from 'licia/isEmpty'
 import isIp from 'licia/isIp'
 import isStr from 'licia/isStr'
+import isUrl from 'licia/isUrl'
 import keys from 'licia/keys'
 import lowerCase from 'licia/lowerCase'
 import map from 'licia/map'
@@ -11,6 +13,8 @@ import safeGet from 'licia/safeGet'
 import startWith from 'licia/startWith'
 import toInt from 'licia/toInt'
 import trim from 'licia/trim'
+import Url from 'licia/Url'
+import psl from 'psl'
 import { whoisDomain, whoisIp, whoisAsn } from 'whoiser'
 import { errorMessage } from '../common/util'
 import { parseWhoisData } from './whoisParser'
@@ -26,6 +30,39 @@ interface WhoisDataBase {
 
 function isASN(str: string): boolean {
   return /^(?:as|asn)?\d+$/i.test(str)
+}
+
+/** Accept bare domains/IPs/ASNs, or URLs like https://www.google.com/path. */
+function normalizeResource(resource: string): string {
+  let value = lowerCase(trim(resource))
+  if (!value) return value
+
+  if (isUrl(value) || startWith(value, '//')) {
+    const parsed = new Url(startWith(value, '//') ? `http:${value}` : value)
+    if (parsed.hostname) {
+      value = parsed.hostname
+    }
+  }
+
+  const slashIdx = value.indexOf('/')
+  if (slashIdx !== -1) {
+    value = value.slice(0, slashIdx)
+  }
+
+  if (startWith(value, '[') && endWith(value, ']')) {
+    value = value.slice(1, -1)
+  }
+
+  if (endWith(value, '.')) {
+    value = value.slice(0, -1)
+  }
+
+  return value
+}
+
+/** WHOIS is for registrable domains (eTLD+1), not subdomains like www. */
+function toRegistrableDomain(hostname: string): string {
+  return psl.get(hostname) || hostname
 }
 
 function extractRawData(result: WhoisDataBase): string {
@@ -111,27 +148,27 @@ async function queryDomainResource(domain: string): Promise<WhoisResult> {
 }
 
 export async function whoisQuery(resource: string): Promise<WhoisResult> {
-  const trimmedResource = lowerCase(trim(resource))
+  const normalized = normalizeResource(resource)
 
-  if (!trimmedResource) {
+  if (!normalized) {
     return {
       success: false,
       error: 'emptyResource',
     }
   }
 
-  if (isIp(trimmedResource)) {
+  if (isIp(normalized)) {
     return queryWhoiserResource(() =>
-      whoisIp(trimmedResource, { timeout: WHOIS_TIMEOUT }),
+      whoisIp(normalized, { timeout: WHOIS_TIMEOUT }),
     )
   }
 
-  if (isASN(trimmedResource)) {
-    const asnNumber = toInt(trimmedResource.replace(/^(?:as|asn)/i, ''))
+  if (isASN(normalized)) {
+    const asnNumber = toInt(normalized.replace(/^(?:as|asn)/i, ''))
     return queryWhoiserResource(() =>
       whoisAsn(asnNumber, { timeout: WHOIS_TIMEOUT }),
     )
   }
 
-  return queryDomainResource(trimmedResource)
+  return queryDomainResource(toRegistrableDomain(normalized))
 }

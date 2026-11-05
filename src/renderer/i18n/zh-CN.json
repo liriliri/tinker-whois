@@ -1,5 +1,5 @@
 {
-  "placeholder": "输入域名（例如 google.com）、IP 地址或 ASN",
+  "placeholder": "输入域名、URL（如 https://www.google.com/）、IP 或 ASN",
   "querying": "查询中...",
   "query": "查询",
   "queryResults": "查询结果",
